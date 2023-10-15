@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="fav2.ico">
+</head>
+<body>
+  <a href="Tech.html" class="logo" target="_blank"></a>
+    <div class="bg-img">
+        <div class="container">
+          <div class="topnav">
+            <a href="Tech.html">Home</a>
+            <a href="Sports.html">Sports</a>
+            <a href="Clubs.html">Clubs & Info</a>
+            <a href="Sportsstores.html">Sports stores</a>
+            <a href="quiz.html">Find your new sport</a>
+          </div>
+        </div>
+      </div>
+<br>
+
+
+<h1>Sport recommendation</h1>
+
+<h2>Complete the recommendation quiz then fill in your recommendation in the database so you and others can see what you got</h2>
+
+
+
+
+<script>
+  function recommend() {
+    var form = document.getElementById("recommendationForm");
+    var runningChoice = getCheckedValue(form, 'running');
+    var locationChoice = getCheckedValue(form, 'location');
+    var peopleChoice = getCheckedValue(form, 'people');
+    var recommendationText = document.getElementById("recommendationText");
+
+    // arrays for recommendations based on choices
+    var runningRecommendations = {
+      alot: ["Track & Cross country", "Basketball", "Netball", "Rugby", "Hockey", "Football","Cricket","Track & field","Lacrosse"],
+      some: ["Tennis & Badminton", "Futsal", "Volleyball", "Field Hockey", "Football", "Handball","Softball","Lacrosse","Basketball"],
+      none: ["Ping Pong", "Swimming & Diving", "Volleyball", "Dodgeball","Tennis & Badminton"]
+    };
+
+    var locationRecommendations = {
+      school: ["Track & Cross country", "Basketball", "Netball", "Rugby","Hockey" ,"Football" ,"Futsal","Tennis & Badminton","Handball","Dodgeball","Volleyball"],
+      club: ["Football", "Cricket", "Rugby","Softball", "Basketball","Volleyball","Field Hockey","Swimming & Diving","Tennis & Badminton"],
+      bother: ["Track & field","Lacrosse","Softball","Hockey","Ping Pong","Badminton", "Tennis & Badminton"]
+    };
+
+    var peopleRecommendations = {
+      one: ["Track & Cross country", "Tennis & Badminton" ,"Ping Pong","Track & field"],
+      three: ["Basketball","Netball", "Futsal", "Swimming & Diving","Lacrosse","Volleyball","Ping Pong"],
+      eight: ["Rugby", "Hockey","Football", "Field Hockey","Handball", "Volleyball","Dodgeball","Cricket","Softball"]
+    };
+
+  // running recommendation is the primary one and then you filter the others to mke it easier
+   var recommendedSport = runningRecommendations[runningChoice]
+   //since you filter the running ones you have to then filter the next to sports
+          .filter(sport => locationRecommendations[locationChoice].includes(sport))
+  //filtering the code allows the computer to cut down all the sports that dont meet the criteria from the users choice
+          .filter(sport => peopleRecommendations[peopleChoice].includes(sport));
+//the recommended sport it comparing the length to 0, if higher than 0, then it will join together the recommendations, 
+//(the numbers stand for arrays), if the amount of arrays that are selected is higher then 0, the code will not show the error message
+        if (recommendedSport.length > 0) {
+          //using "join" means joining together 2 arrays if both meet the criteria
+            recommendationText.textContent = recommendedSport.join(", ") + (",    - The best option I recommend based on your choices, feel free do try different choices!");
+        } else {
+            recommendationText.textContent = "I'm sorry, I can't find you a sport, please try again";
+        }  
+    }
+//This will return the value of the selected radio button within that group, or an empty string if none is selected. 
+    function getCheckedValue(form, name) {
+        var checkedInput = form.querySelector(`input[name="${name}"]:checked`);
+        //? means "if-else, then" so if the stings or arrays are not 0 then it will return the value to the user.
+        return checkedInput ? checkedInput.value : '';
+
+    }
+  
+</script>
+
+
+<div class="grid-container">
+  <!-- Recommendation Form -->
+  <form id="recommendationForm" class="grid-item">
+      <h3>How much running do you want in your sports? <label style="color: rgb(213, 209, 165)"> * </label></h3>
+      <input type="radio" name="running" value="alot"> Alot - running all the time<br>
+      <input type="radio" name="running" value="some"> Some - running half of the game<br>
+      <input type="radio" name="running" value="none"> None - staying in one spot<br>
+
+      <h3>Would you rather your sports to be at school or club? <label style="color: rgb(213, 209, 165)"> * </label></h3>
+      <input type="radio" name="location" value="school"> School - sports at school<br>
+      <input type="radio" name="location" value="club"> Club - after school hours<br>
+      <input type="radio" name="location" value="bother"> Doesn't bother me<br>
+
+      <h3>How many people would you like in your team? <label style="color: rgb(213, 209, 165)"> * </label></h3>
+      <input type="radio" name="people" value="one"> 1-2, doubles or singles<br>
+      <input type="radio" name="people" value="three"> 3-7, small team<br>
+      <input type="radio" name="people" value="eight"> 8-15, big team<br>
+
+      <button type="button" onclick="recommend()">Submit</button>
+      <h2>Recommendation:</h2>
+      <p id="recommendationText"></p>
+  </form>
+
+  <!-- Enter Details -->
+  <div id="enterDetails" class="grid-item">
+      <h3>Enter in your recommendation below so you don't forget it</h3>
+
+      <h4>Name</h4>
+      <input id="enterName" type="text">
+
+      <h4>Recommendation</h4>
+      <input id="enterRecommendation" type="text">
+
+      <h4>Age</h4>
+      <input id="enterAge" type="number"> <br><br>
+
+      <button id="insert">INSERT</button>
+      <button id="update">UPDATE</button>
+      <button id="remove">REMOVE</button> <br><br>
+  </div>
+
+  <!-- Find by ID -->
+  <div id="findDetails" class="grid-item">
+      <h3>Want to check what you recommendation was? enter your name down below </h3>
+      <h4>Name</h4>
+      <input id="findName" type="text"> <br><br>
+      <button id="find">FIND</button>
+      <h3 id="findRecommendation" type="text"></h3>
+      <h3 id="findAge" input type="date"></h3> <br><br>
+  </div>
+</div>
+
+
+
+<script type="module">
+
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDgOa8LXKzGYzNF-8qreYU0rVaZW1HegUs",
+    authDomain: "database-c6448.firebaseapp.com",
+    databaseURL: "https://database-c6448-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "database-c6448",
+    storageBucket: "database-c6448.appspot.com",
+    messagingSenderId: "43894903820",
+    appId: "1:43894903820:web:927b706f43e647d7364a29"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+
+        import {getDatabase, ref, get, set, child, update, remove}
+        from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js"
+
+        const db = getDatabase();
+
+        var enterName = document.querySelector("#enterName");
+        var enterRecommendation = document.querySelector("#enterRecommendation");
+        var enterAge = document.querySelector("#enterAge");
+        var findName = document.querySelector("#findName");
+        var findRecommendation = document.querySelector("#findRecommendation");
+        var findAge = document.querySelector("#findAge");
+      
+
+        var insertBtn = document.querySelector("#insert");
+        var updateBtn = document.querySelector("#update");
+        var removeBtn = document.querySelector("#remove");
+        var findBtn = document.querySelector("#find");
+
+        function InsertData() {
+            set(ref(db, "People/"+ enterName.value),{
+                Recommendation: enterRecommendation.value,
+                Name: enterName.value,
+                Age: enterAge.value
+            })
+            .then(()=>{
+                alert("Data added successfully");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        }
+
+        function FindData() {
+            const dbref = ref(db);
+
+            get(child(dbref, "People/" + findName.value))
+            .then((snapshot)=>{
+                if(snapshot.exists()){
+                    findRecommendation.innerHTML = "Recommendation: " + snapshot.val().Recommendation;
+                    findAge.innerHTML = "Age: " + snapshot.val().Age;
+                } else {
+                    alert("No data found");
+                }
+            })
+            .catch((error)=>{
+                alert(error)
+            })
+            
+        }
+
+        function UpdateData(){
+            update(ref(db, "People/"+ enterName.value),{
+                Recommendation: enterRecommendation.value,
+                Age: enterAge.value
+            })
+            .then(()=>{
+                alert("Data updated successfully");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        }
+
+        function RemoveData(){
+            remove(ref(db, "People/"+ enterName.value))
+            .then(()=>{
+                alert("Data deleted successfully");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        }
+
+        insertBtn.addEventListener('click', InsertData);
+        updateBtn.addEventListener('click', UpdateData);
+        removeBtn.addEventListener('click', RemoveData);
+        findBtn.addEventListener('click', FindData);
+
+      </script>
+
+
+<style>
+   /* Position the navbar container inside the image */
+.container {
+  position: absolute;
+  margin: 20px;
+  width: auto;
+  z-index: 2;
+  top: 0;
+  left: 48%;
+  transform: translateX(-50%);
+  width: auto;
+}
+
+/* The navbar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  z-index: 2;
+}
+
+/* Navbar links */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  z-index: 2;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+  z-index: 2;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
+
+body {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #ececee;
+    background-color: #1f2029;
+    background-position: center;
+    background-repeat: repeat;
+    background-size: 4%;
+    height: 100vh;
+    text-align: center;
+  
+  }
+  .section-center {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    z-index: 6;
+    text-align: center;
+    transform: translateY(-50%);
+  }
+  h1 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 7vw;
+    line-height: 1;
+    color: #a44d88;
+    text-align: center;
+    
+    -webkit-text-stroke: 2px #e8ca8f;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  
+  #h32 {color: #e8ca8f;}
+
+  #whole {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  justify-content: center; /* Horizontally center the grid */
+  align-items: center; /* Vertically center the grid */
+  height: 80vh; /* Adjust the height as needed */
+}
+
+#detailsContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  height: 100%; /* Expand the container to full height */
+  align-items: center; /* Vertically center the content within the container */
+}
+
+#findDetails {
+  width: 280px;
+  height: 580px;
+  background-color: #1f2029;
+  color: rgb(255, 255, 255);
+  border: 2px solid #e8ca8f;
+  padding: 15px;
+  margin: 10px;
+}
+#enterDetails {
+  width: 100%;
+  height: 580px;
+  background-color: #1f2029;
+  color: rgb(255, 255, 255);
+  border: 2px solid #e8ca8f;
+  padding: 15px;
+  margin: 0px;
+}
+#recommendationForm { 
+  width: 600px;
+  height: 580px;
+  background-color: #1f2029;
+  color: rgb(255, 255, 255);
+  border: 2px solid #e8ca8f;
+  padding: 15px;
+  margin: 30px;}
+
+
+
+  .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-item {
+            width: 100%;
+            background-color: #1f2029;
+            color: rgb(255, 255, 255);
+            border: 2px solid #e8ca8f;
+            padding: 15px;
+        }
+
+
+    </style>
+  
+</body>
+</html>
